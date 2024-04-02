@@ -27,12 +27,14 @@ pub const kAudio_ParamError: OSStatus = -50;
 pub const kAudio_MemFullError: OSStatus = -108;
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioValueRange {
     pub mMinimum: f64,
     pub mMaximum: f64,
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct AudioValueTranslation {
     pub mInputData: *const c_void,
     pub mInputDataSize: u32,
@@ -41,6 +43,7 @@ pub struct AudioValueTranslation {
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct AudioBuffer {
     pub mNumberChannels: u32,
     pub mDataByteSize: u32,
@@ -48,6 +51,7 @@ pub struct AudioBuffer {
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Default, Debug, PartialEq)]
 pub struct AudioBufferList {
     pub mNumberBuffers: u32,
     pub mBuffers: [AudioBuffer; 1usize],
@@ -69,6 +73,7 @@ pub type AudioFormatID = u32;
 pub type AudioFormatFlags = u32;
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioStreamBasicDescription {
     pub mSampleRate: f64,
     pub mFormatID: AudioFormatID,
@@ -240,6 +245,7 @@ pub fn FillOutASBDForLPCM(
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioStreamPacketDescription {
     pub mStartOffset: i64,
     pub mVariableFramesInPacket: u32,
@@ -268,6 +274,7 @@ pub const kSMPTETimeValid: SMPTETimeFlags = 1 << 0;
 pub const kSMPTETimeRunning: SMPTETimeFlags = 1 << 1;
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct SMPTETime {
     pub mSubframes: i16,
     pub mSubframeDivisor: i16,
@@ -291,6 +298,7 @@ pub const kAudioTimeStampSMPTETimeValid: AudioTimeStampFlags = 1 << 4;
 pub const kAudioTimeStampSampleHostTimeValid: AudioTimeStampFlags = kAudioTimeStampSampleTimeValid | kAudioTimeStampHostTimeValid;
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioTimeStamp {
     pub mSampleTime: f64,
     pub mHostTime: u64,
@@ -362,6 +370,7 @@ pub fn FillOutAudioTimeStampWithSampleAndHostTime(outATS: &mut AudioTimeStamp, i
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioClassDescription {
     pub mType: OSType,
     pub mSubType: OSType,
@@ -735,6 +744,7 @@ pub const kAudioChannelLayoutTag_EndReserved: AudioChannelLayoutTag = 0xFFFEFFFF
 pub const kAudioChannelLayoutTag_Unknown: AudioChannelLayoutTag = 0xFFFF0000;
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioChannelDescription {
     pub mChannelLabel: AudioChannelLabel,
     pub mChannelFlags: AudioChannelFlags,
@@ -742,6 +752,7 @@ pub struct AudioChannelDescription {
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioChannelLayout {
     pub mChannelLayoutTag: AudioChannelLayoutTag,
     pub mChannelBitmap: AudioChannelBitmap,
@@ -755,6 +766,7 @@ pub fn AudioChannelLayoutTag_GetNumberOfChannels(inLayoutTag: AudioChannelLayout
 }
 
 #[repr(C)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioFormatListItem {
     pub mASBD: AudioStreamBasicDescription,
     pub mChannelLayoutTag: AudioChannelLayoutTag,
@@ -771,3 +783,15 @@ pub const kMPEG4Object_AAC_Scalable: MPEG4ObjectID = 6;
 pub const kMPEG4Object_TwinVQ: MPEG4ObjectID = 7;
 pub const kMPEG4Object_CELP: MPEG4ObjectID = 8;
 pub const kMPEG4Object_HVXC: MPEG4ObjectID = 9;
+
+impl Default for AudioValueTranslation {
+    fn default() -> Self {
+        unsafe { std::mem::zeroed() }
+    }
+}
+
+impl Default for AudioBuffer {
+    fn default() -> Self {
+        unsafe { std::mem::zeroed() }
+    }
+}
