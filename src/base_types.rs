@@ -51,7 +51,7 @@ pub struct AudioBuffer {
 }
 
 #[repr(C)]
-#[derive(Clone, Copy, Default, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct AudioBufferList {
     pub mNumberBuffers: u32,
     pub mBuffers: [AudioBuffer; 1usize],
